@@ -1,0 +1,15 @@
+{
+    "name": "vscode-go",
+    "author": "vscode",
+    "engines": {
+        "vscode": "^1.11.0"
+    },
+    "contributes": {
+        "snippets": [
+            {
+                "language": "go",
+                "path": "./go.json"
+            }
+        ]
+    }
+}
