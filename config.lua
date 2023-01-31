@@ -12,6 +12,10 @@ an executable
 lvim.log.level = "warn"
 lvim.format_on_save.enabled = false
 lvim.colorscheme = "lunar"
+
+vim.opt.expandtab = true -- convert tabs to spaces
+vim.opt.shiftwidth = 4 -- the number of spaces inserted for each indentation
+vim.opt.tabstop = 4 -- insert 2 spaces for a tab
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -19,6 +23,18 @@ lvim.colorscheme = "lunar"
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+lvim.keys.normal_mode["<F8>"] = ":TagbarToggle<CR>"
+lvim.keys.term_mode["<Esc>"] = "<C-\\><C-n>"
+vim.cmd("cnoreabbrev W w")
+vim.cmd("cnoreabbrev Q q")
+vim.cmd("cnoreabbrev Wq wq")
+vim.cmd("cnoreabbrev Wqa wqa")
+vim.cmd("cnoreabbrev Qa qa")
+vim.cmd("cnoreabbrev Qa! qa!")
+vim.cmd("cnoreabbrev ack Ack")
+vim.cmd("set autochdir")
+vim.cmd("au VimEnter * lcd %:p:h")
+
 -- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 -- lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 -- unmap a default keymapping
@@ -162,13 +178,44 @@ lvim.builtin.treesitter.highlight.enable = true
 --   },
 -- }
 
--- Additional Plugins
--- lvim.plugins = {
---     {
---       "folke/trouble.nvim",
---       cmd = "TroubleToggle",
---     },
--- }
+lvim.plugins = {
+  {
+    "fatih/vim-go",
+    "majutsushi/tagbar",
+    "mileszs/ack.vim",
+    "sindrets/diffview.nvim",
+-- "nvim-lua/plenary.nvim"
+    "APZelos/blamer.nvim"
+    },
+    {
+        "f-person/git-blame.nvim",
+        event = "BufRead",
+        config = function()
+            vim.cmd "highlight default link gitblame SpecialComment"
+            vim.g.gitblame_enabled = 0
+        end,
+    },
+}
+
+require("nvim-tree").setup({
+    sort_by = "case_sensitive",
+    view = {
+        adaptive_size = true,
+        mappings = {
+            list = {
+                { key = "u", action = "dir_up" },
+            },
+        },
+    },
+    renderer = {
+        group_empty = true,
+    },
+    filters = {
+        dotfiles = true,
+    },
+})
+
+lvim.builtin.bufferline.active = false
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- vim.api.nvim_create_autocmd("BufEnter", {
